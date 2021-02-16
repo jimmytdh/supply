@@ -41,8 +41,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function userAccess()
+    public function roles()
     {
         return $this->hasMany('App\Models\UserAccess');
+    }
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('level','admin')->exists();
     }
 }

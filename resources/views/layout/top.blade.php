@@ -23,6 +23,7 @@
     </form>
 
     <!-- Right navbar links -->
+    @if(auth()->user()->isAdmin())
     <ul class="navbar-nav ml-auto">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
@@ -114,4 +115,5 @@
                     class="fas fa-th-large"></i></a>
         </li>
     </ul>
+    @endif
 </nav>

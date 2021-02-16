@@ -9,9 +9,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $level = Auth::user()->userAccess();
-        return $level;
-
-        return view('admin.index');
+        if(auth()->user()->isAdmin()){
+            return view('admin.index');
+        }
+        return view('user.index');
     }
 }

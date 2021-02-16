@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UnitController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +21,40 @@ use App\Http\Controllers\HomeController;
 Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login',[LoginController::class,'validateLogin']);
 Route::get('/logout',[LoginController::class,'logout'])->name('logout');
+Route::get('/error',function (){
+    return view('error');
+})->name('error');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/',[HomeController::class,'index'])->name('home');
+    Route::post('/search',[HomeController::class,'search'])->name('search');
+
+    Route::group(['middleware' => 'admin'], function() {
+        //Purchase Order
+        Route::get('/po',[PurchaseOrderController::class,'index'])->name('po');
+        Route::get('/po/create',[PurchaseOrderController::class,'create'])->name('create.po');
+        Route::post('/po/update',[PurchaseOrderController::class,'update'])->name('update.po');
+        Route::post('/po/delete',[PurchaseOrderController::class,'update'])->name('delete.po');
+        //Items in Purchase Order
+        Route::get('/po/items/{po_id}',[PurchaseOrderController::class,'items'])->name('items.po');
+        Route::post('/po/items/update',[PurchaseOrderController::class,'updatePurchaseItem'])->name('update.purchaseItem');
+        Route::get('/po/items/amount/{po_id}',[PurchaseOrderController::class,'calculateAmount'])->name('total.purchaseItem');
+        Route::get('/po/{id}',[PurchaseOrderController::class,'edit'])->name('edit.po');
+
+        //Manage Items
+        Route::post('/items/update',[ItemController::class,'update'])->name('update.item');
+        Route::get('/items/create/default/{po_id}',[ItemController::class,'createDefaultValue'])->name('default.item');
+        Route::post('/items/remove/',[ItemController::class,'delete'])->name('delete.item');
+
+
+        //Mange Suppliers
+        Route::get('/misc/supplier',[SupplierController::class,'index'])->name('supplier');
+        Route::post('/misc/supplier',[SupplierController::class,'store'])->name('add.supplier');
+        Route::get('/misc/supplier/{id}',[SupplierController::class,'edit'])->name('edit.supplier');
+        Route::put('/misc/supplier/{id}',[SupplierController::class,'update'])->name('update.supplier');
+        Route::delete('/misc/supplier/{id}',[SupplierController::class,'delete'])->name('delete.supplier');
+
+        //Manage Units
+        Route::resource('/misc/unit',UnitController::class);
+    });
 });

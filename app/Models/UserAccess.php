@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserAccess extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql';
     protected $fillable = ['user_id','level'];
 
     public function user()
