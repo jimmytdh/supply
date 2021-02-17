@@ -34,7 +34,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/po',[PurchaseOrderController::class,'index'])->name('po');
         Route::get('/po/create',[PurchaseOrderController::class,'create'])->name('create.po');
         Route::post('/po/update',[PurchaseOrderController::class,'update'])->name('update.po');
-        Route::post('/po/delete',[PurchaseOrderController::class,'update'])->name('delete.po');
+        Route::post('/po/delete',[PurchaseOrderController::class,'delete'])->name('delete.po');
+        Route::get('/po/report',[PurchaseOrderController::class,'printReport']);
+        Route::post('/po/report',[PurchaseOrderController::class,'storeDate']);
         //Items in Purchase Order
         Route::get('/po/items/{po_id}',[PurchaseOrderController::class,'items'])->name('items.po');
         Route::post('/po/items/update',[PurchaseOrderController::class,'updatePurchaseItem'])->name('update.purchaseItem');

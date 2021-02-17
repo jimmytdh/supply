@@ -178,7 +178,7 @@
                     data: { id: "{{ $po->id }}" },
                     type: "post",
                     success: function (data){
-                        window.local.href("{{ url('/po') }}");
+                        window.location.replace("{{ url('/po') }}");
                     }
                 })
             }

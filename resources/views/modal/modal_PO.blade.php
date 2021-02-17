@@ -7,16 +7,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('/po/report') }}" method="post">
+            <form action="{{ url('/po/report') }}" method="post" id="dateRangeForm">
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Select Date:</label>
-                        <input type="date" class="form-control" name="date" value="{{ date("Y-m-d") }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Select Time:</label>
-                        <input type="time" class="form-control" name="time" value="09:00:00" required>
+                        <input type="text" class="form-control float-right" name="dateRange" id="dateRange" required>
                     </div>
                 </div>
                 <div class="modal-footer">

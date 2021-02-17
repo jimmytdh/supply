@@ -2,6 +2,7 @@
 @section('css')
     <link rel="stylesheet" href="{{ url('/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ url('/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('/plugins/daterangepicker/daterangepicker.css') }}" />
 @endsection
 @section('content')
     <div class="content-header">
@@ -57,6 +58,8 @@
     <script src="{{ url('/') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{ url('/') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="{{ url('/') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="{{ url('/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ url('/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script>
         $(document).ready(function () {
 
@@ -82,6 +85,41 @@
                 ]
             });
 
+            //Date range picker
+            $('#dateRange').daterangepicker({
+                startDate: "{{ \Carbon\Carbon::now()->startOfMonth()->format('m/d/Y') }}",
+                endDate: "{{ \Carbon\Carbon::now()->endOfMonth()->format('m/d/Y') }}",
+            });
+
+            $("#dateRangeForm").submit(function (e){
+                e.preventDefault();
+                showLoader();
+                $("#print").modal('hide');
+                var formData = new FormData(this);
+                var url = $(this).attr("action");
+                console.log(url);
+                $.ajax({
+                    url: url,
+                    data: formData,
+                    type: "post",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data){
+                        var win = window.open("{{ url("/po/report") }}",'Print Report',"width=600,height=800");
+                        setTimeout(function (){
+                            if (win) {
+                                //Browser has allowed it to be opened
+                                win.focus();
+                            } else {
+                                //Browser has blocked it
+                                alert('Please allow popups for this website');
+                            }
+                            hideLoader();
+                        },500);
+                    }
+                })
+            })
         });
     </script>
 @endsection

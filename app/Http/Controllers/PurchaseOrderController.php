@@ -7,8 +7,10 @@ use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use App\Models\Unit;
+use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
 
 class PurchaseOrderController extends Controller
@@ -195,5 +197,36 @@ class PurchaseOrderController extends Controller
             'total_amount' => $sum
         ]);
         return number_format($sum);
+    }
+
+    public function storeDate(Request $request)
+    {
+        $str = $request->dateRange;
+        $temp1 = explode('-',$str);
+        $temp2 = array_slice($temp1, 0, 1);
+        $tmp = implode(',', $temp2);
+        $start = Carbon::parse($tmp)->startOfDay();
+
+        $temp3 = array_slice($temp1, 1, 1);
+        $tmp = implode(',', $temp3);
+        $end = Carbon::parse($tmp)->endOfDay();
+
+        Session::put('po_report_date',[
+            'start' => $start,
+            'end' => $end
+        ]);
+        return 0;
+    }
+
+    public function printReport()
+    {
+        $date = (object) Session::get('po_report_date');
+        $data = PurchaseOrder::whereBetween('po_date',[$date->start,$date->end])
+                    ->get();
+        $title = Carbon::parse($date->start)->format('M d, Y')." to ".Carbon::parse($date->end)->format('M d, Y');
+        $pdf = PDF:: loadView('print.print_PO',compact('title','data'));
+        return $pdf->setPaper('a4','portrait')
+                ->stream($title.'.pdf');
+        return view('print.print_PO',compact('data','title'));
     }
 }
