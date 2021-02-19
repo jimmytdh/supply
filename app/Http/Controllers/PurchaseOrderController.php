@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Delivery;
 use App\Models\Item;
+use App\Models\Pending;
 use App\Models\PurchaseItem;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
@@ -79,6 +81,7 @@ class PurchaseOrderController extends Controller
         $t->payment_term = null;
         $t->total_amount = 0;
         $t->fund_source = '----';
+        $t->status = 'pending';
         $t->save();
 
         $i = new Item();
@@ -119,6 +122,7 @@ class PurchaseOrderController extends Controller
         {
             Item::find($i->item_id)->delete();
             PurchaseItem::find($i->id)->delete();
+            Delivery::where('item_id',$i->item_id)->delete();
         }
         $p->delete();
         return 0;

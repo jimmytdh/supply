@@ -19,5 +19,6 @@ class PurchaseOrder extends Model
         'payment_term',
         'total_amount',
         'fund_source',
+        'status',
     ];
 }

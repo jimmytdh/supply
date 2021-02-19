@@ -34,9 +34,6 @@
                     <a href="{{ route('po') }}" class="btn btn-warning">
                         <i class="fa fa-arrow-circle-left"></i> Back to List
                     </a>
-                    <button class="btn btn-primary btn-add">
-                        <i class="fa fa-plus-circle"></i> Add Item
-                    </button>
                     <button class="btn btn-danger deletePO">
                         <i class="fa fa-minus-circle"></i> Delete Purchase Order
                     </button>
@@ -92,6 +89,18 @@
                                     <th></th>
                                 </tr>
                             </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <td colspan="7" class="text-right">
+                                        <button class="btn btn-primary btn-add">
+                                            <i class="fa fa-plus-circle"></i> Add Item
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfooter>
                         </table>
                     </div>
                 </div>

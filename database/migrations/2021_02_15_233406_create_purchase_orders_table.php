@@ -25,6 +25,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->string('payment_term')->nullable();
             $table->integer('total_amount');
             $table->string('fund_source');
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\DeliveryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/po/items/update',[PurchaseOrderController::class,'updatePurchaseItem'])->name('update.purchaseItem');
         Route::get('/po/items/amount/{po_id}',[PurchaseOrderController::class,'calculateAmount'])->name('total.purchaseItem');
         Route::get('/po/{id}',[PurchaseOrderController::class,'edit'])->name('edit.po');
+
+        //Manage Deliveries
+        Route::get('/delivery',[DeliveryController::class,'index'])->name('delivery');
+        Route::post('/delivery/search',[DeliveryController::class,'search'])->name('search.po');
 
         //Manage Items
         Route::post('/items/update',[ItemController::class,'update'])->name('update.item');

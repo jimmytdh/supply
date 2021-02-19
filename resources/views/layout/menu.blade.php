@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ url('/delivery') }}" class="nav-link {{ request()->is('delivery*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-truck"></i> Deliveries
                     </a>
                 </li>
