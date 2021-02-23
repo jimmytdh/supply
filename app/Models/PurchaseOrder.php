@@ -21,4 +21,14 @@ class PurchaseOrder extends Model
         'fund_source',
         'status',
     ];
+
+    public function purchaseItems()
+    {
+        return $this->hasMany(PurchaseItem::class,'po_id');
+    }
+
+    public function items()
+    {
+        return $this->purchaseItems()->leftJoin('items','items.id','=','purchase_items.item_id')->get();
+    }
 }

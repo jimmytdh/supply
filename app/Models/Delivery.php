@@ -16,4 +16,10 @@ class Delivery extends Model
         'date_delivered',
         'remarks',
     ];
+
+    public function delivered()
+    {
+        return $this->belongsTo(PurchaseItem::class)
+                    ->sum('qty');
+    }
 }

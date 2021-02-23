@@ -15,4 +15,11 @@ class PurchaseItem extends Model
         'qty',
         'unit',
     ];
+
+    public function status($po_id, $item_id)
+    {
+        return $this->hasMany(Delivery::class)->where('po_id',$po_id)
+                    ->where('item_id',$item_id)
+                    ->count();
+    }
 }

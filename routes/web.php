@@ -47,6 +47,9 @@ Route::group(['middleware' => 'auth'], function() {
         //Manage Deliveries
         Route::get('/delivery',[DeliveryController::class,'index'])->name('delivery');
         Route::post('/delivery/search',[DeliveryController::class,'search'])->name('search.po');
+        Route::get('/delivery/item/{id}',[DeliveryController::class,'showItemDescription']);
+
+        Route::get('/delivery/{id}',[DeliveryController::class,'show'])->name('show.po');
 
         //Manage Items
         Route::post('/items/update',[ItemController::class,'update'])->name('update.item');
@@ -64,4 +67,9 @@ Route::group(['middleware' => 'auth'], function() {
         //Manage Units
         Route::resource('/misc/unit',UnitController::class);
     });
+});
+
+
+Route::get('/load',function (){
+    return view('load.load');
 });

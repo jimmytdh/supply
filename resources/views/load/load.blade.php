@@ -1,0 +1,3 @@
+<div class="modal-body text-center p-3 font-weight-bold">
+    <i class="fa fa-spinner fa-spin"></i> Please wait while fetching data...
+</div>

@@ -28,10 +28,10 @@
                                 {{ csrf_field() }}
                                 <input type="text" class="form-control" name="po_no" placeholder="Enter PO #" required>
                                 <span class="input-group-append">
-                                <button type="submit" class="btn btn-info">
-                                    <i class="fa fa-search"></i> Search PO #
-                                </button>
-                            </span>
+                                    <button type="submit" class="btn btn-info">
+                                        <i class="fa fa-search"></i> Search PO #
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </form>
