@@ -35,7 +35,7 @@ class DeliveryController extends Controller
                 ->rawColumns(['po_no','item'])
                 ->toJson();
         }
-        return view('admin\delivery');
+        return view('admin.delivery');
     }
 
     public function search(Request $request)
@@ -71,7 +71,7 @@ class DeliveryController extends Controller
                         ->where('po_id',$id)
                         ->get();
 
-        return view('admin\deliver_form',compact('po','supplier','items','deliveries'));
+        return view('admin.deliver_form',compact('po','supplier','items','deliveries'));
     }
 
     static function unDeliveredItems($po_id,$item_id,$qty)
