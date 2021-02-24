@@ -35,7 +35,7 @@ class DeliveryController extends Controller
                 ->rawColumns(['po_no','item'])
                 ->toJson();
         }
-        return view('admin.delivery');
+        return view('admin\delivery');
     }
 
     public function search(Request $request)
