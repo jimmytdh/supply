@@ -35,6 +35,7 @@ class ItemController extends Controller
         $i->name = 'Item Name';
         $i->description = 'Item Description';
         $i->unit_cost = '0';
+        $i->type = 'supplies';
         $i->save();
 
         $p = new PurchaseItem();

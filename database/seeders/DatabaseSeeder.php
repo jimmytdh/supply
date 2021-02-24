@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        InspectorSeeder::class;
+
         DB::table('user_accesses')
             ->insert([
                 'user_id' => 1,
@@ -32,8 +34,8 @@ class DatabaseSeeder extends Seeder
 
         DB::table('units')
             ->insert([
-                'code' => 'm',
-                'description' => 'meter'
+                'code' => 'pcs',
+                'description' => 'pieces'
             ]);
 
         DB::table('units')

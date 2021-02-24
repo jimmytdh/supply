@@ -1,77 +1,61 @@
+<form action="{{ route('submit.delivery') }}" method="post">
+{{ csrf_field() }}
+<input type="hidden" name="item_id" value="{{ $item->id }}">
+<input type="hidden" name="po_id" value="{{ $po->id }}">
 <div class="modal-body">
     <div class="row">
-        <div class="col-md-7">
-            <table class="table border table-sm">
-                <tr>
-                    <th class="bg-gray" colspan="2">Description</th>
-                </tr>
-                <tr>
-                    <td colspan="2">{!! nl2br($item->description) !!}</td>
-                </tr>
-                <tr>
-                    <th class="bg-gray">Unit Cost</th>
-                    <td>{{ number_format($item->unit_cost,2) }}</td>
-                </tr>
-                <?php
-                    $deliver = \App\Http\Controllers\DeliveryController::unDeliveredItems($po->id,$item->id,$purchaseItem->qty);
-                ?>
-                <tr>
-                    <th class="bg-gray">For Delivery</th>
-                    <td>{{ $deliver }}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-md-5">
-            <table class="table border table-sm">
-                <tr>
-                    <th class="bg-gray">Select Inspectors</th>
-                </tr>
-                @foreach($inspectors as $ins)
-                <tr>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="inspectors[]" value="{{ $ins->user_id }}">
-                            {{ $ins->lname }}, {{ $ins->fname }}
-                        </label>
-                    </td>
-                </tr>
-                @endforeach
-            </table>
-
-            <table class="table border table-sm">
-                <tr>
-                    <th class="bg-gray">Select Item Type</th>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            <input type="radio" name="type" value="equipment" checked>
-                            Equipment & Semi-Expendables
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            <input type="radio" name="type" value="supplies">
-                            Supplies & Materials
-                        </label>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <table class="table border">
+            <tr>
+                <th class="bg-success" colspan="2">Description</th>
+            </tr>
+            <tr>
+                <td colspan="2">{!! nl2br($item->description) !!}</td>
+            </tr>
+            <tr>
+                <th class="bg-success" width="50%">Unit Cost</th>
+                <td>{{ number_format($item->unit_cost,2) }}</td>
+            </tr>
+            <?php
+            $deliver = \App\Http\Controllers\DeliveryController::unDeliveredItems($po->id,$item->id,$purchaseItem->qty);
+            ?>
+            <tr>
+                <th class="bg-success">For Delivery</th>
+                <td>{{ $deliver }} {{ $purchaseItem->unit }}</td>
+            </tr>
+            @if($deliver > 0)
+            <tr>
+                <th class="bg-success">Qty Delivered</th>
+                <td class="bg-warning">
+                    <input type="number" max="{{ $deliver }}" min="1" value="1" class="form-control" name="qty" placeholder="Enter Qty Delivered" required>
+                </td>
+            </tr>
+            @endif
+        </table>
     </div>
-
+    @if($deliver > 0)
+    <label for="inspectors">Select Inspectors:<br>
+        <small class="text-muted"><em>(Hold CTRL Key to Multi Select)</em></small>
+    </label>
+    <select multiple name="inspectors[]" size="5" id="inspectors" class="form-control">
+        @foreach($inspectors as $ins)
+            <option value="{{ $ins->user_id }}">{{ $ins->lname }}, {{ $ins->fname }}</option>
+        @endforeach
+    </select>
+    <div class="form-group">
+        <label for="remarks">Remarks</label>
+        <textarea name="remarks" style="resize: none;" id="remarks" rows="3" class="form-control" placeholder="Enter Remarks"></textarea>
+    </div>
+    @else
+    <div class="alert alert-success">
+        <i class="fa fa-check-circle"></i> Complete Delivery
+    </div>
+    @endif
 </div>
 
 <div class="modal-footer">
-    <div class="input-group">
-        {{ csrf_field() }}
-        <input type="number" min="1" value="1" class="form-control" name="qty" placeholder="Enter Qty Delivered" required>
-        <span class="input-group-append">
-            <button type="submit" class="btn btn-info">
-                <i class="fa fa-save"></i> Save
-            </button>
-        </span>
-    </div>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    @if($deliver > 0)
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @endif
 </div>
+</form>

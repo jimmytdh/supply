@@ -39,14 +39,20 @@ class PurchaseOrderController extends Controller
                     return $str;
                 })
                 ->addColumn('no_items', function($row){
-                    $items = PurchaseItem::where('po_id',$row->id)->count();
-                    return $items;
+                    $no_items = PurchaseItem::where('po_id',$row->id)->count();
+                    $items = PurchaseItem::where('po_id',$row->id)->sum('qty');
+                    $delivery = Delivery::where('po_id',$row->id)->sum('qty');
+                    $remaining = $items - $delivery;
+                    $status = "<small class='text-danger'>( Pending )</small>";
+                    if($remaining==0)
+                        $status = "<small class='text-success'>( Complete )</small>";
+                    return $no_items . "<br>" . $status;
                 })
                 ->addColumn('total_amount', function($row){
                     $amount = number_format($row->total_amount,2);
                     return $amount;
                 })
-                ->rawColumns(['supplier','po_no'])
+                ->rawColumns(['supplier','po_no','no_items'])
                 ->toJson();
         }
         return view('admin.po');
@@ -88,6 +94,7 @@ class PurchaseOrderController extends Controller
         $i->name = 'Item Name';
         $i->description = 'Item Description';
         $i->unit_cost = '0';
+        $i->type = 'supplies';
         $i->save();
 
         $p = new PurchaseItem();
@@ -136,7 +143,8 @@ class PurchaseOrderController extends Controller
                             'items.id as item_id',
                             'items.name',
                             'items.description',
-                            'items.unit_cost'
+                            'items.unit_cost',
+                            'items.type',
                         )
                         ->leftJoin('purchase_orders','purchase_orders.id','=','purchase_items.po_id')
                         ->leftJoin('items','items.id','=','purchase_items.item_id')
@@ -152,6 +160,10 @@ class PurchaseOrderController extends Controller
                 })
                 ->addColumn('qty', function($row){
                     return "<span class='editPurchaseItem' id='qty' data-title='Qty' data-pk='$row->id'>$row->qty</span>";
+                })
+                ->addColumn('type', function($row){
+                    $type = ucfirst($row->type);
+                    return "<span class='selectItemType' data-value='$row->type' id='type' data-type='select' data-title='Item Type' data-pk='$row->item_id'>$type</span>";
                 })
                 ->addColumn('description',function($row){
                         $desc = "<span class='editItem' id='name' data-title='Item Name' data-pk='$row->item_id'>$row->name</span>";
@@ -171,7 +183,7 @@ class PurchaseOrderController extends Controller
                 ->addColumn('action', function($row){
                     return "<button class='btn btn-danger btn-sm deleteItem' data-id='$row->id'><i class='fa fa-trash'></i> Remove</button>";
                 })
-                ->rawColumns(['item_no','unit','qty','unit_cost','amount','description','action'])
+                ->rawColumns(['item_no','unit','qty','unit_cost','amount','description','action','type'])
                 ->toJson();
         }
         return 0;

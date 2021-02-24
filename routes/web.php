@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function() {
         //Manage Deliveries
         Route::get('/delivery',[DeliveryController::class,'index'])->name('delivery');
         Route::post('/delivery/search',[DeliveryController::class,'search'])->name('search.po');
+        Route::post('/delivery/submit',[DeliveryController::class,'store'])->name('submit.delivery');
         Route::get('/delivery/item/{id}',[DeliveryController::class,'showItemDescription']);
 
         Route::get('/delivery/{id}',[DeliveryController::class,'show'])->name('show.po');

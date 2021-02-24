@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Item extends Model
+class PurchaseInspector extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'name','description','unit_cost','type'
-    ];
+
+    protected $fillable = ['delivery_id','user_id'];
 }

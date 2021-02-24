@@ -83,6 +83,7 @@
                                     <th>Item No.</th>
                                     <th>Unit</th>
                                     <th>Description</th>
+                                    <th>Type</th>
                                     <th>Quantity</th>
                                     <th>Unit Cost</th>
                                     <th>Amount</th>
@@ -94,7 +95,7 @@
                             </tbody>
                             <tfooter>
                                 <tr>
-                                    <td colspan="7" class="text-right">
+                                    <td colspan="8" class="text-right">
                                         <button class="btn btn-primary btn-add">
                                             <i class="fa fa-plus-circle"></i> Add Item
                                         </button>
@@ -138,6 +139,7 @@
                     { data: 'item_no', name: 'item_no'},
                     { data: 'unit', name: 'unit'},
                     { data: 'description', name: 'description'},
+                    { data: 'type', name: 'type'},
                     { data: 'qty', name: 'qty'},
                     { data: 'unit_cost', name: 'unit_cost'},
                     { data: 'amount', name: 'amount'},
@@ -214,6 +216,19 @@
                     @foreach($units as $u)
                         {value: "{{ $u->code }}", text: "{{ $u->code }}"},
                     @endforeach
+                ],
+                success: function(data) {
+                    updateDataTable();
+                }
+            });
+
+            $('.selectItemType').editable({
+                url: "{{ route('update.item') }}",
+                source: [
+                    { value: "supplies", text: "Supplies" },
+                    { value: "materials", text: "Materials" },
+                    { value: "equipment", text: "Equipment" },
+                    { value: "semi-expendables", text: "Semi-expendables" },
                 ],
                 success: function(data) {
                     updateDataTable();

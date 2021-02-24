@@ -38,7 +38,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="dataTable" class="table table-bordered table-hover">
+                        <table id="dataTable" class="table table-striped table-sm table-hover">
                             <thead>
                             <tr>
                                 <th>PO No.</th>
@@ -86,8 +86,8 @@
 
                 },
                 columnDefs: [
-                    { className: 'text-center' , targets: [4]},
-                    { className: 'text-right' , targets: [5]},
+                    { className: 'text-center' , targets: [2,3,4]},
+                    { className: 'text-right' , targets: []},
                 ]
             });
 

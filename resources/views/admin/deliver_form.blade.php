@@ -100,8 +100,9 @@
                                     <th>Item Name</th>
                                     <th class="text-center">Unit</th>
                                     <th class="text-center">Qty</th>
+                                    <th class="text-center">For Delivery</th>
                                     <th class="text-right">Unit Cost</th>
-                                    <th class="text-center">Status</th>
+                                    <th class="pl-4">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -112,13 +113,13 @@
                                     $class = 'danger';
                                     $icon = 'minus-circle';
                                     if($code == 0){
-                                        $status = 'Completely Delivery';
+                                        $status = 'Complete Delivery';
                                         $class = 'success';
                                         $icon = 'check-circle';
-                                    }else if($code > 0 && $code <> $i->qty){
-                                        $status = 'Partially Delivered';
-                                        $class = 'warning';
-                                        $class = 'exclamation-circle';
+                                    }else if($code > 0 && $code != $i->qty){
+                                        $status = 'Partial Delivery';
+                                        $class = 'info';
+                                        $icon = 'exclamation-circle';
                                     }
                                 ?>
                                 <tr class="items" data-title="{{ $i->name }}" data-id="{{ $i->id }}">
@@ -126,8 +127,9 @@
                                     <th>{{ $i->name }}</th>
                                     <td class="text-center">{{ $i->unit }}</td>
                                     <td class="text-center">{{ $i->qty }}</td>
+                                    <td class="text-center">{{ $code }}</td>
                                     <td class="text-right">{{ number_format($i->unit_cost,2) }}</td>
-                                    <td class="text-center text-{{ $class }}">
+                                    <td class="pl-4 text-{{ $class }}">
                                         <i class="fa fa-{{ $icon }}"></i>
                                         {!! $status !!}
                                     </td>
@@ -146,16 +148,33 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="deliveryTable" class="table table-bordered table-hover table-sm table-danger">
-                            <thead>
+                        <table id="deliveryTable" class="table table-hover table-sm table-danger">
+                            <thead class="bg-red">
                             <tr>
                                 <th>Item</th>
-                                <th>Unit</th>
-                                <th>Qty</th>
+                                <th class="text-center">Unit</th>
+                                <th class="text-center">Qty</th>
                                 <th>Date Delivered</th>
                                 <th>Remarks</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            @foreach($deliveries as $del)
+                            <tr>
+                                <td>{{ $del->name }}</td>
+                                <td class="text-center">{{ $del->unit }}</td>
+                                <td class="text-center">{{ $del->qty }}</td>
+                                <td>{{ date('M d, Y',strtotime($del->date_delivered)) }}</td>
+                                <td>{!! nl2br($del->remarks) !!}</td>
+                            </tr>
+                            @endforeach
+
+                            @if(count($deliveries)==0)
+                            <tr>
+                                <td colspan="5" class="text-center p-3"> No delivery history</td>
+                            </tr>
+                            @endif
+                            </tbody>
                         </table>
                     </div>
                 </div>

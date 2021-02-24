@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" role="dialog" id="modalDelivery">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title"><i class="fa fa-spinner fa-spin"></i> Please wait...</h5>
