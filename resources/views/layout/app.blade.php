@@ -12,7 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>@yield('title','Inventory System')</title>
     <meta name="author" content="Jimmy Parker">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="http://localhost/utz/images/favicon.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ url('/') }}/img/favicon.png" sizes="16x16" type="image/png">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ url('/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
