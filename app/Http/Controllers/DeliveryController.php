@@ -21,6 +21,13 @@ class DeliveryController extends Controller
         if(request()->ajax()){
             $delivery = Delivery::orderBy('date_delivered','desc')->get();
             return DataTables::of($delivery)
+                ->addColumn('delivery_no',function($delivery){
+                    $po = PurchaseOrder::find($delivery->po_id);
+                    $y = Carbon::parse($po->po_date)->format('Y');
+                    $p = str_pad($po->id,2,0,STR_PAD_LEFT);
+                    $d = str_pad($delivery->delivery_no,2,0,STR_PAD_LEFT);
+                    return "<span class='font-weight-bold text-info'>D$y-$p-$d</span>";
+                })
                 ->addColumn('po_no',function($delivery){
                     $po = PurchaseOrder::find($delivery->po_id);
                     $url = url('/delivery/'.$po->id);
@@ -32,7 +39,7 @@ class DeliveryController extends Controller
                 ->addColumn('date_delivered',function($delivery){
                     return date('F d, Y',strtotime($delivery->date_delivered));
                 })
-                ->rawColumns(['po_no','item'])
+                ->rawColumns(['delivery_no','po_no','item'])
                 ->toJson();
         }
         return view('admin.delivery');
@@ -101,13 +108,38 @@ class DeliveryController extends Controller
     public function store(Request $request)
     {
         $item = PurchaseItem::where('item_id',$request->item_id)->first();
-
+        $date_delivered = Carbon::now()->format('Y-m-d');
+        $qty = $request->qty;
+        $delivery_no = 1;
+        $previousDelivery = Delivery::where('po_id',$request->po_id)
+            ->orderBy('id','desc')
+            ->first();
+        if($previousDelivery){
+            $sameDateDelivery = Delivery::where('po_id',$request->po_id)
+                ->where('date_delivered',$date_delivered)
+                ->first();
+            if($sameDateDelivery){
+                $delivery_no = $sameDateDelivery->delivery_no;
+                return $request->item_id;
+                if($sameDateDelivery->item_id == $request->item_id){
+                    $qty += $sameDateDelivery->qty;
+                    Delivery::find($sameDateDelivery->id)
+                        ->update([
+                           'qty' => $qty
+                        ]);
+                    return redirect()->back()->with('success',true);
+                }
+            }else{
+                $delivery_no = $previousDelivery->delivery_no + 1;
+            }
+        }
         $d = new Delivery();
+        $d->delivery_no = $delivery_no;
         $d->po_id = $request->po_id;
         $d->item_id = $request->item_id;
         $d->unit = $item->unit;
-        $d->qty = $request->qty;
-        $d->date_delivered = Carbon::now();
+        $d->qty = $qty;
+        $d->date_delivered = $date_delivered;
         $d->remarks = $request->remarks;
         $d->save();
 
@@ -121,5 +153,23 @@ class DeliveryController extends Controller
         }
 
         return redirect()->back()->with('success',true);
+    }
+
+    function pages(Request $req)
+    {
+        $position = array();
+        foreach($req->pages as $page)
+        {
+            $position->pages($page);
+        }
+    }
+
+    static function generateDeliveryNo($delivery)
+    {
+        $po = PurchaseOrder::find($delivery->po_id);
+        $y = Carbon::parse($po->po_date)->format('Y');
+        $p = str_pad($po->id,2,0,STR_PAD_LEFT);
+        $d = str_pad($delivery->delivery_no,2,0,STR_PAD_LEFT);
+        return "D$y-$p-$d";
     }
 }

@@ -41,6 +41,7 @@
                         <table id="dataTable" class="table table-striped table-sm table-hover">
                             <thead>
                             <tr>
+                                <th>Delivery No.</th>
                                 <th>PO No.</th>
                                 <th>Item</th>
                                 <th>Unit</th>
@@ -75,6 +76,7 @@
                 serverSide: true,
                 ajax: "{{ route('delivery') }}",
                 columns: [
+                    { data: 'delivery_no', name: 'delivery_no'},
                     { data: 'po_no', name: 'po_no'},
                     { data: 'item', name: 'item'},
                     { data: 'unit', name: 'unit'},

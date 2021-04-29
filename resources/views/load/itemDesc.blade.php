@@ -6,25 +6,25 @@
     <div class="row">
         <table class="table border">
             <tr>
-                <th class="bg-success" colspan="2">Description</th>
+                <th class="bg-info" colspan="2">Description</th>
             </tr>
             <tr>
                 <td colspan="2">{!! nl2br($item->description) !!}</td>
             </tr>
             <tr>
-                <th class="bg-success" width="50%">Unit Cost</th>
+                <th class="bg-info" width="50%">Unit Cost</th>
                 <td>{{ number_format($item->unit_cost,2) }}</td>
             </tr>
             <?php
             $deliver = \App\Http\Controllers\DeliveryController::unDeliveredItems($po->id,$item->id,$purchaseItem->qty);
             ?>
             <tr>
-                <th class="bg-success">For Delivery</th>
+                <th class="bg-info">For Delivery</th>
                 <td>{{ $deliver }} {{ $purchaseItem->unit }}</td>
             </tr>
             @if($deliver > 0)
             <tr>
-                <th class="bg-success">Qty Delivered</th>
+                <th class="bg-info">Qty Delivered</th>
                 <td class="bg-warning">
                     <input type="number" max="{{ $deliver }}" min="1" value="1" class="form-control" name="qty" placeholder="Enter Qty Delivered" required>
                 </td>

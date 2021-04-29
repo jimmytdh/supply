@@ -151,6 +151,7 @@
                         <table id="deliveryTable" class="table table-hover table-sm table-danger">
                             <thead class="bg-red">
                             <tr>
+                                <th>Delivery No.</th>
                                 <th>Item</th>
                                 <th class="text-center">Unit</th>
                                 <th class="text-center">Qty</th>
@@ -161,6 +162,7 @@
                             <tbody>
                             @foreach($deliveries as $del)
                             <tr>
+                                <td>{{ \App\Http\Controllers\DeliveryController::generateDeliveryNo($del) }}</td>
                                 <td>{{ $del->name }}</td>
                                 <td class="text-center">{{ $del->unit }}</td>
                                 <td class="text-center">{{ $del->qty }}</td>
