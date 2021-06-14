@@ -157,6 +157,7 @@
                                 <th class="text-center">Qty</th>
                                 <th>Date Delivered</th>
                                 <th>Remarks</th>
+                                <th>Remove</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -168,12 +169,17 @@
                                 <td class="text-center">{{ $del->qty }}</td>
                                 <td>{{ date('M d, Y',strtotime($del->date_delivered)) }}</td>
                                 <td>{!! nl2br($del->remarks) !!}</td>
+                                <td>
+                                    <a href="{{ url('/delivery/delete/'.$del->id) }}" class="deleteDelivery text-danger" onclick="return confirm('Are you sure you want to remove this record?')">
+                                        <i class="fa fa-trash-alt"></i> Remove
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
 
                             @if(count($deliveries)==0)
                             <tr>
-                                <td colspan="5" class="text-center p-3"> No delivery history</td>
+                                <td colspan="7" class="text-center p-3"> No delivery history</td>
                             </tr>
                             @endif
                             </tbody>
@@ -239,5 +245,6 @@
         $('#modalDelivery').on('hidden.bs.modal', function () {
             $(".load_content").load("{{ url('/load') }}");
         });
+
     </script>
 @endsection

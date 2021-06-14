@@ -49,6 +49,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/delivery/search',[DeliveryController::class,'search'])->name('search.po');
         Route::post('/delivery/submit',[DeliveryController::class,'store'])->name('submit.delivery');
         Route::get('/delivery/item/{id}',[DeliveryController::class,'showItemDescription']);
+        Route::get('/delivery/delete/{id}',[DeliveryController::class,'delete'])->name('delete.delivery');
+
 
         Route::get('/delivery/{id}',[DeliveryController::class,'show'])->name('show.po');
 

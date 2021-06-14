@@ -152,8 +152,8 @@
                     makeEditable();
                 },
                 columnDefs: [
-                    { className: 'text-center' , targets: [0,1,3,6]},
-                    { className: 'text-right' , targets: [4,5]},
+                    { className: 'text-center' , targets: [0,1,3,7]},
+                    { className: 'text-right' , targets: [4,5,6]},
                 ]
             });
 

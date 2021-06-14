@@ -120,7 +120,7 @@ class DeliveryController extends Controller
                 ->first();
             if($sameDateDelivery){
                 $delivery_no = $sameDateDelivery->delivery_no;
-                return $request->item_id;
+                //return $request->item_id;
                 if($sameDateDelivery->item_id == $request->item_id){
                     $qty += $sameDateDelivery->qty;
                     Delivery::find($sameDateDelivery->id)
@@ -133,6 +133,7 @@ class DeliveryController extends Controller
                 $delivery_no = $previousDelivery->delivery_no + 1;
             }
         }
+
         $d = new Delivery();
         $d->delivery_no = $delivery_no;
         $d->po_id = $request->po_id;
@@ -171,5 +172,12 @@ class DeliveryController extends Controller
         $p = str_pad($po->id,2,0,STR_PAD_LEFT);
         $d = str_pad($delivery->delivery_no,2,0,STR_PAD_LEFT);
         return "D$y-$p-$d";
+    }
+
+    public function delete($id)
+    {
+        Delivery::find($id)->delete();
+        PurchaseInspector::where('delivery_id',$id)->delete();
+        return redirect()->back()->with('status','deleteDelivery');
     }
 }
