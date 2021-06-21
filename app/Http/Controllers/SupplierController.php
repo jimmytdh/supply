@@ -89,4 +89,13 @@ class SupplierController extends Controller
 
         return "Supplier successfully removed from database!";
     }
+
+    static function getSupplierInfo($id)
+    {
+        $supplier = Supplier::find($id);
+        if($supplier){
+            return $supplier;
+        }
+        return 0;
+    }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\InspectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,10 @@ Route::group(['middleware' => 'auth'], function() {
 
         //Manage Units
         Route::resource('/misc/unit',UnitController::class);
+
+        //Manage Inspections
+        Route::get('/inspection',[InspectionController::class,'index']);
+        Route::post('/inspection/search',[InspectionController::class,'search']);
     });
 });
 

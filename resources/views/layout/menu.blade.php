@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ url('/inspection') }}" class="nav-link {{ request()->is('inspection*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-search-dollar"></i> Inspection & Acceptance
                     </a>
                 </li>
