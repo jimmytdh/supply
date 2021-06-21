@@ -13,6 +13,8 @@ class EndUserController extends Controller
                     ->where('users.id',$id)
                     ->leftJoin('section','section.id','=','users.section')
                     ->first();
-        return $info;
+        if($info)
+            return $info;
+        return 0;
     }
 }

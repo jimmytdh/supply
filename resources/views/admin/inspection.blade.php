@@ -51,7 +51,7 @@
                                         @if(!$supplier)
                                         <div class="info-box-content">
                                             <span class="info-box-text">Supplier</span>
-                                            <span class="info-box-number">No Supplier</span>
+                                            <span class="info-box-number">--None--</span>
                                         </div>
                                         @else
                                             <div class="info-box-content">
@@ -70,12 +70,19 @@
                                     <div class="info-box mb-3">
                                         <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user"></i></span>
                                         <?php $endUser = \App\Http\Controllers\EndUserController::getEndUserInfo($po->end_user); ?>
+                                        @if($endUser)
                                         <div class="info-box-content">
                                             <span class="info-box-text">End-User</span>
                                             <span class="info-box-number">{{ $endUser->fname." ".$endUser->lname }}<br>
                                                 <font class="text-success">{{$endUser->description}}</font>
                                             </span>
                                         </div>
+                                        @else
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">End User</span>
+                                                <span class="info-box-number">--None--</span>
+                                            </div>
+                                        @endif
                                         <!-- /.info-box-content -->
                                     </div>
                                     <!-- /.info-box -->
